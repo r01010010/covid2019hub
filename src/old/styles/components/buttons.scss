@@ -1,0 +1,13 @@
+@import '../mixins/radius';
+@import '../_colors';
+
+%button { @include border-radius(10px); }
+
+.button-primary {
+  @extend %button;
+  background-color: $primary-blue;
+}
+
+.button-disabled {
+  opacity: 50%;
+}

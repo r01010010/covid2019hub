@@ -1,0 +1,788 @@
+@import 'vars',
+  'colors',
+  'mixins/radius',
+  'mixins/shadow',
+  'mixins/transitions',
+  'mixins/gradient',
+  'mixins/placeholder',
+  'mixins/noselect',
+  './components/buttons';
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+@font-face {
+    font-family: CollegiateHeavyOutlineWeb;
+    src: url(fonts/collegiateHeavyOutlineMedium.ttf);
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  color: #000;
+  background-color: #000;
+}
+
+body {
+  font-family: montserrat, roboto, arial, sans-serif;
+  font-size: 14px;
+}
+
+:focus {
+  outline-color: transparent;
+  outline-style: none;
+}
+
+#root {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 50px;
+  color: #fff;
+  position: absolute;
+  width: 100%;
+  z-index: 4;
+
+  .section-left, .section-right {
+    display: flex;
+    flex-direction: row;
+  }
+  .section-right {
+    justify-content: flex-end;
+    padding-right: 80px;
+  }
+
+  .ball {
+    display: none;
+  }
+
+  .flag, .ball {
+    cursor: pointer;
+    opacity: .8;
+  }
+
+  .flag:hover, .ball:hover {
+    opacity: 1;
+  }
+
+  .flag:active, .ball:active {
+    opacity: 0.7;
+  }
+
+  .ball {
+    img {
+      margin: 0;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  span {
+    padding-right: 15px;
+  }
+  span:last-child {
+    padding-right: 0;
+  }
+}
+
+header .first {
+  font-family: 'CollegiateHeavyOutlineWeb';
+  font-size: 26px;
+  font-weight: 300;
+  padding-left: 80px;
+}
+
+.menu-item {
+  padding-left: 20px;
+  text-transform: uppercase;
+  font-size: 13px;
+  line-height: 30px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-main-green;
+  }
+}
+
+
+
+%section {
+  display: flex;
+  flex-direction:row;
+  padding: 70px 80px;
+}
+
+%top-shadow {
+  -webkit-box-shadow: inset 1px 24px 52px -4px rgba(0,0,0,0.32);
+  -moz-box-shadow: inset 1px 24px 52px -4px rgba(0,0,0,0.32);
+  box-shadow: inset 1px 24px 52px -4px rgba(0,0,0,0.32);
+}
+
+.section {
+  @extend %section;
+  overflow: hidden;
+}
+
+.section button {
+  margin-top: 30px;
+}
+
+.section-left {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.section-right {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.section-form {
+  padding-left: 50px;
+}
+
+.section-icon-left > div {
+  position: relative;
+  justify-content: flex-end;
+  align-items: flex-start;
+  left: -140px;
+  bottom: -100px;
+  z-index: 10;
+  -ms-transform: scale(1.2, 1.2); /* IE 9 */
+  -webkit-transform: scale(1.2, 1.2); /* Safari */
+  transform: scale(1.2, 1.2);
+}
+
+.section-icon-right {
+  height: 270px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  position: relative;
+  bottom: -150px;
+  right: -150px;
+  z-index: 10;
+}
+
+#clubs > .section-right {
+  -webkit-transform:rotate(-45deg);
+  -moz-transform:rotate(-45deg);
+  -o-transform:rotate(-45deg);
+  position: relative;
+  right: -280px;
+}
+
+#presentation {
+  height: 500px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+
+  .title {
+    font-family: 'CollegiateHeavyOutlineWeb';
+    font-size: 70px;
+    font-weight: 500;
+    // text-shadow: 1px 1px 1px rgba(194, 255, 31, .4);
+    text-align: center;
+    line-height: 60px;
+    margin-bottom: 20px;
+  }
+  .subtitle {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+  }
+}
+
+#presentation-background {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.4;
+}
+
+.presentation-background-football {
+  background-image: url(/assets/images/football-bg-old.jpg);
+}
+
+.presentation-background-basket {
+  background-image: url(/assets/images/basket-bg.jpg);
+}
+
+#presentation-icon {
+  position: absolute;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 20px;
+  display: none;
+}
+
+#presentation-content {
+  height: 100%;
+  width: 100%;
+  color: #fff;
+  background-color: transparent;
+  position: absolute;
+  z-index: 3;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .theme-choose {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+
+  }
+}
+
+#players {
+  @include verticalGradient(#4b6cb7, #182848);
+  // background-color: #dae2f8;
+  // background-color: black;
+  //opacity: 0.8;
+  @include verticalGradient(#16a085, #f4d03f);
+  @extend %top-shadow;
+  color: #fff;
+}
+
+#how-it-works {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  background-color: #333;
+  @include verticalGradient(#a42db4, #e45d61);
+  @extend %top-shadow;
+
+  .section-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 35px;
+    width: 500px;
+    text-align: center;
+  }
+
+  .section-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 600px;
+    text-align: center;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    width: 160px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    .card-icon {
+      padding-bottom: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 80px;
+    }
+    .card-title {
+      display: flex;
+      justify-content: flex-start;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 600;
+      padding-bottom: 10px;
+      height: 30px;
+    }
+    .card-paragraph {
+      font-size: 13px;
+    }
+  }
+}
+
+#invest {
+  @include verticalGradient(#12d8fa, #a6ffcb);
+  @extend %top-shadow;
+  // text-shadow: 1.5px 0.5px rgba(255,255,255,0.4);
+
+}
+
+#clubs {
+  @include verticalGradient(#eecda3, #ef629f);
+  @extend %top-shadow;
+  // text-shadow: 1.5px 0.5px rgba(255,255,255,0.4);
+}
+
+
+.mvph-list {
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+.mvph-list-item {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 12px;
+}
+.list-item-text {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-left: 20px;
+  align-self: center;
+}
+.star {
+  font-size: 40px;
+  // padding-right: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: center;
+  // text-shadow: '0 1px 0 rgba(0, 0, 0, 0.1)';
+
+  & > .white {
+    filter: invert(100%);
+  }
+}
+
+.title {
+  font-size: 35px;
+  font-weight: 800;
+  padding-bottom: 5px;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: rgba(0, 0, 0, 0.1) 0px 1px 0px;
+}
+
+
+.subtitle-1 {
+  font-size: 20px;
+  font-weight: 600;
+  padding-bottom: 15px;
+  color: #903AAF;
+  color: $color-main-green;
+  opacity: 1;
+}
+
+.paragraph {
+  font-size: 14px;
+  font-weight: 400;
+  color: #fff;
+  opacity: 0.9;
+}
+
+.font-noir {
+  color: #000;
+}
+
+.presentation-button-container {
+  // padding-left: 15px;
+}
+
+.big-button {
+   height: 43px;
+}
+
+.button-enabled, .button-disabled {
+  @include border-radius(20px);
+  //@include verticalGradient(#FE424B, #FE424B);
+  @include noselect();
+  cursor: pointer;
+  border: none;
+  //border: 3px solid $color-main-green;
+  background-color: $color-main-green;
+  // opacity: 0.7;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: #111;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  width: 180px;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.button-enabled:active {
+  transform: scale(.95);
+}
+
+.button-transparent {
+  border: 1px solid $color-main-green;
+  background-color: transparent;
+  color: $color-main-green;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.button-enabled:hover {
+  background-color: transparent;
+  color: $color-main-green;
+  border: 1px solid $color-main-green;
+}
+
+.button-disabled {
+  opacity: 0.5;
+}
+
+.signup-form-container {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-input {
+  width: 300px;
+  border: 1px solid #fff;
+  border-radius: 20px;
+  height: 40px;
+  font-size: 20px;
+  color: #fff;
+  background: transparent;
+  padding-left: 15px;
+}
+
+.notification {
+  opacity: 0.6;
+  animation: hide 3s ease-in 0s both;
+  background-color: #000000;
+  height: 40px;
+  color: #ffffff;
+  padding: px;
+  border-radius: 8px;
+  line-height: 40px;
+  padding: 0 $marpad-m;
+  z-index: 100000;
+}
+
+@keyframes hide {
+      0% {
+        opacity: 0;
+        visibility: hidden;
+      }
+      10% {
+        opacity: 0.6;
+        visibility: visible;
+      }
+      75% {
+        opacity: 0.6;
+        visibility: visible;
+      }
+      100% {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+    }
+
+// hides map style buttons (map, satellite)
+.gmnoprint {
+  display: none;
+}
+
+// Custom radio button
+.radios-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.radio-container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #fff;
+  margin-left: 20px;
+  line-height: 25px;
+}
+
+.radio-container:first-child{
+  margin-left: 0;
+}
+
+/* Hide the browser's default radio button */
+.radio-container input {
+  position: absolute;
+  opacity: 0;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #555;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.radio-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.radio-container input:checked ~ .checkmark {
+  background-color: $color-main-green;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radio-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radio-container .checkmark:after {
+  top: 9px;
+  left: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #555;
+}
+
+.errors-container {
+  color: red;
+  & > div {
+    padding-bottom: 5px;
+    font-size: 13px;
+  }
+
+  & > div::before {
+    content: '- '
+  }
+}
+
+.signupok-container {
+  a {
+    color: #FE424B;
+  }
+  color: #fff;
+}
+
+.mail_main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  background-color: #333;
+  @include verticalGradient(#a42db4, #e45d61);
+  @extend %top-shadow;
+  padding: 70px;
+
+  .title {
+    text-transform: none;
+  }
+  .subtitle {
+    font-size: 18px;
+    font-weight: 500;
+    color: $color-main-green;
+  }
+  .body {
+    max-width: 600px;
+    padding-top: 30px;
+    text-align: center;
+  }
+  a {
+    color: $color-main-green;
+  }
+}
+
+
+@media only screen and (min-width: 800px) {
+  .logo {
+    background-image: url('/assets/images/mvph_logo_900px.png');
+    width: 700px;
+    height: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: block;
+  }
+}
+
+@media only screen and (min-width: 501px) and (max-width: 799px) {
+  .logo {
+    background-image: url('/assets/images/mvph_logo_900px.png');
+    width: 500px;
+    height: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: block;
+  }
+  .btapp {
+    width: 190px
+  }
+}
+
+// MOBILE
+
+@media only screen and (min-width: 501px) {
+  .only-mobile {
+    display: none;
+  }
+  .btapp {
+    width: 190px
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .logo {
+    background-image: url('/assets/images/appiconv2padding.png');
+    width: 120px;
+    height: 120px;
+    display: block;
+    background-size: cover;
+    border-radius: 15px;
+  }
+
+  .logo-name {
+    font-family: 'norwester';
+    font-size: 30px;
+    padding: 20px;
+    color: #C0FC1E;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .7);
+
+  }
+
+  header {
+    padding: 20px 0;
+    .section-left {
+      display: none;
+    }
+    .section-right {
+      justify-content: center;
+      padding: 0;
+    }
+  }
+  .btapp {
+    width: 160px
+  }
+  .section {
+    padding: 50px 30px;
+    overflow: hidden;
+  }
+  .no-mobile {
+    display: none;
+  }
+  #how-it-works .section-top {
+    width: 100%;
+  }
+  #how-it-works .section-bottom {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  #how-it-works .card .card-icon {
+    padding-bottom: 0;
+  }
+  #signup {
+    display: flex;
+    flex-direction: column;
+  }
+  #signup {
+    .section-right {
+      padding-left: 0px;
+      padding-top: 25px;
+    }
+  }
+}
+
+.mail_main{
+    display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     align-self: center;
+     text-align: center;
+     color: #fff;
+     background-color: #333;
+     background-color: #a42db4;
+     // filter: progid: DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#a42db4, endColorstr=#e45d61);
+     background-image: -moz-linear-gradient(center top, #a42db4, #e45d61);
+     background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#a42db4), to(#e45d61));
+     background: -webkit-linear-gradient(left, #a42db4, #e45d61);
+     background: linear-gradient(to right, #a42db4, #e45d61);
+     background-repeat: repeat-x;
+     padding: 50px;
+}
+.mail_main .title{
+    text-transform: none;
+     font-weight: 600;
+     font-size: 40px;
+     align-self: center;
+     text-align: center;
+}
+.mail_main .subtitle{
+    font-size: 18px;
+     font-weight: 500;
+     color: $color-main-green;
+     align-self: center;
+     text-align: center;
+}
+.mail_main .body{
+    max-width: 600px;
+     padding-top: 30px;
+     text-align: center;
+     align-self: center;
+}
+.mail_main a{
+  color: $color-main-green;
+}
+
+#bubble-image {
+  display: none !important;
+}
+
+#tawkchat-minified-container {
+  background-color: $color-main-green !important;
+}

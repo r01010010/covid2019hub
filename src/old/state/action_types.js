@@ -1,0 +1,7 @@
+const actionTypes = {
+  USER_CREATE: 'USER_CREATE',
+  USER_CREATE_RECEIVE: 'USER_CREATE_RECEIVE',
+  NOTIFICATIONS_CLEAR: 'NOTIFICATIONS_CLEAR',
+};
+
+export default actionTypes;

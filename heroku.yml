@@ -1,0 +1,5 @@
+build:
+  languages:
+    - javascript
+run:
+  web: node server
