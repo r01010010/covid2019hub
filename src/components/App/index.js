@@ -27,6 +27,10 @@ export const App = observer(() => {
     setForm({ ...form, [field]: e.target.value})
   }
 
+  const handleChangePlace = (e) => {
+    store.placeId = parseInt(e.target.value)
+  }
+
   const createUser = () => {
     restClient.users.create({
       email: form.email,
@@ -42,11 +46,14 @@ export const App = observer(() => {
     })
   }
 
+  const filteredHospitals = hospitals.filter(h => h.placeId === store.placeId);
+
   return (
     <>
       <Title>
         {/* <div><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/pager_1f4df.png" width="120" height="120"></img></div> */}
-        <div>COVID2019 HUB</div>
+        <div>EMERGENCIA</div>
+        <div style={{ fontSize: 35 }}>COVID2019</div>
       </Title>
 
       <Welcome>
@@ -113,13 +120,13 @@ export const App = observer(() => {
         <List>
           <Title2>🏥 Hospitales de ...
           <Filter>
-            <Select>
+            <Select onChange={handleChangePlace}>
               <option>Selecciona una provincia:</option>
-              { orderedPlaces.map(place => (<option value={place.id} key={place.id}>{place.nm}</option>)) }
+              { orderedPlaces.map(place => (<option value={place.id} key={place.id} selected={place.id === store.placeId}>{place.nm}</option>)) }
             </Select>
           </Filter>
           </Title2>
-          { hospitals.map(hospital => (
+          { filteredHospitals.map(hospital => (
             <Hospital key={hospital.id}>
               <HName>{hospital.nm}</HName>
               <HDescription><a href={`https://www.google.com/maps/place/${hospital.nm.split(' ').join('+')}+${hospital.address.split(' ').join('+')}`} target='_blank' rel='noopener noreferrer'>{hospital.address}</a></HDescription>
@@ -131,6 +138,7 @@ export const App = observer(() => {
               </Buttons>
             </Hospital>
           ))}
+          { filteredHospitals.length === 0 && <div>No hay datos para esta provincia.</div>}
         </List>
       }
       <Footer>

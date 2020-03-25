@@ -5,6 +5,11 @@ export default [
     types: ['proteccion']
   },
   {
+    id: 'visors',
+    name: 'Viseras',
+    types: ['proteccion']
+  },
+  {
     id: 'respirators',
     name: 'Respiradores',
     types: ['tratamiento']

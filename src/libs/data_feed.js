@@ -10,5 +10,5 @@ export class UXStore {
   section = null
 
   @observable
-  place = null
+  placeId = null
 }
