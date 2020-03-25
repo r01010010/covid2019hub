@@ -7,6 +7,7 @@ var UserSchema = new Schema({
 	email:  { type: String, index: true, unique: true},
 	uuid: String,
 	name: String,
+	center: String,
 	signup_date: { type: Date, default: Date.now },
 	description: String,
 	lang: String,

@@ -36,6 +36,7 @@ export const App = observer(() => {
     restClient.users.create({
       email: form.email,
       name: form.name,
+      center: form.center,
       description: form.description,
       placeId: parseInt(form.placeId),
       isRegistered: false,
@@ -76,9 +77,16 @@ export const App = observer(() => {
       </MenuButtons>
 
       { response && <FormResponse>Estamos verificando tu información. Si todo es correcto aparecerá en la web en unos minutos. Gracias!</FormResponse> }
+
       { ((section === 'we_need_help' || section === 'i_want_to_help') && !response) && 
         <div>
           <Title3>{section === 'we_need_help' ? 'Ayuda!' : 'Ayudar'}</Title3>
+          {section === 'we_need_help' ? 
+            <div style={{ marginTop: 8 }}>Trabajas en un Hospital u otro centro que necesita ayuda? Usa este formulario para solicitarla.</div>
+          : 
+            <div style={{ marginTop: 8 }}>Tienes una impresora 3D? Quizás una máquina de coser? Conocimientos? Se te ocurre algo para ayudar? Usa el formulario y registrate en nuestra base de datos. Te pondremos en contacto con centros que lo necesitan!</div> 
+          }
+          
           <HelpForm>
             <div style={{ marginBottom: 5, width: '100%' }}>
               { section === 'we_need_help' &&
@@ -107,6 +115,7 @@ export const App = observer(() => {
                 { orderedPlaces.map(place => (<option value={parseInt(place.id)} key={place.id}>{place.nm}</option>)) }
               </Select>
             </div>
+            <Input type='text' placeholder='Centro (Ej. Hospital Santa Cristina)' value={form.center} onChange={(e) => handleChange(e, 'center')} ></Input>
             <Input type='text' placeholder='Nombre y apellidos' value={form.name} onChange={(e) => handleChange(e, 'name')} ></Input>
             <Input type='email' placeholder='Email' value={form.email} onChange={(e) => handleChange(e, 'email')} ></Input>
             <Input type='tel' placeholder='Telefono' value={form.phone} onChange={(e) => handleChange(e, 'phone')} ></Input>

@@ -65,7 +65,7 @@ export default [
   },
   {
     "id": "05",
-    "nm": "Ávila"
+    "nm": "Avila"
   },
   {
     "id": "09",
