@@ -19,6 +19,7 @@ export const App = observer(() => {
   const { section } = store
   
   const activate = (section) => {
+    setResponse(null)
     store.section = section;
   }
 
@@ -35,11 +36,9 @@ export const App = observer(() => {
       isRegistered: false,
       lang: 'es-es',
       category: form.category,
-      type: 'receiver'
+      type: section === 'we_need_help' ? 'receiver' : 'donor'
     }, (err, data) => {
       setResponse({ err, data })
-      setTimeout(() => setResponse(null), 1000 * 10)
-      activate(null)
     })
   }
 
@@ -61,44 +60,54 @@ export const App = observer(() => {
       </MenuButtons>
 
       { response && <FormResponse>Estamos verificando tu información. Si todo es correcto aparecerá en la web en unos minutos. Gracias!</FormResponse> }
-      { (section === 'we_need_help' && !response) && <HelpForm>
-           
-              <div style={{ marginBottom: 5 }}>
-                <Select value={form.category} onChange={(e) => handleChange(e, 'category')}>
-                  <option value='null'>Destino</option>
-                  <option value='hospital'>Hospital</option>
-                  <option value='pharm'>Farmacia</option>
-                  <option value='supermarket'>Supermercado</option>
-                  <option value='person'>Persona</option>
-                  <option value='other'>Otro</option>
-                </Select>
-              </div>
-              <div style={{ marginBottom: 5 }}>
-                <Select value={form.placeId} onChange={(e) => handleChange(e, 'placeId')}>
-                  <option>Provincia</option>
-                  { orderedPlaces.map(place => (<option value={parseInt(place.id)} key={place.id}>{place.nm}</option>)) }
-                </Select>
-              </div>
-              <Input type='text' placeholder='Nombre y apellidos' value={form.name} onChange={(e) => handleChange(e, 'name')} ></Input>
-              <Input type='email' placeholder='Email' value={form.email} onChange={(e) => handleChange(e, 'email')} ></Input>
-              <Input type='tel' placeholder='Telefono' value={form.phone} onChange={(e) => handleChange(e, 'phone')} ></Input>
-              <Textarea 
-                placeholder='Indica qué necesitas, cuánto necesitas, para cuando lo necesitas, quien crees que podría aportarlo?' 
-                value={form.description}
-                onChange={(e) => handleChange(e, 'description')}   
-                />
-              <ButtonHelpMe onClick={createUser}>PEDIR AYUDA</ButtonHelpMe>
+      { ((section === 'we_need_help' || section === 'i_want_to_help') && !response) && <HelpForm>
+          <div style={{ marginBottom: 5, width: '100%' }}>
+            { section === 'we_need_help' &&
+              <Select value={form.category} onChange={(e) => handleChange(e, 'category')}>
+                <option value='null'>Destino</option>
+                <option value='hospital'>Hospital</option>
+                <option value='pharm'>Farmacia</option>
+                <option value='supermarket'>Supermercado</option>
+                <option value='person'>Persona</option>
+                <option value='other'>Otro</option>
+              </Select>
+            }
             
+            { section === 'i_want_to_help' && 
+              <Select value={form.category} onChange={(e) => handleChange(e, 'category')}>
+                <option value='null'>Soy/Tengo ...</option>
+                <option value='3dprinter'>Impresora 3D</option>
+                <option value='specialist'>Especialista</option>
+                <option value='other'>Otro</option>
+              </Select> 
+            }
+            </div>
+            <div style={{ marginBottom: 5 }}>
+              <Select value={form.placeId} onChange={(e) => handleChange(e, 'placeId')}>
+                <option>Provincia</option>
+                { orderedPlaces.map(place => (<option value={parseInt(place.id)} key={place.id}>{place.nm}</option>)) }
+              </Select>
+            </div>
+            <Input type='text' placeholder='Nombre y apellidos' value={form.name} onChange={(e) => handleChange(e, 'name')} ></Input>
+            <Input type='email' placeholder='Email' value={form.email} onChange={(e) => handleChange(e, 'email')} ></Input>
+            <Input type='tel' placeholder='Telefono' value={form.phone} onChange={(e) => handleChange(e, 'phone')} ></Input>
+            <Textarea 
+              placeholder={ 
+                section === 'we_need_help' 
+                  ? 'Indica qué necesitas, cuánto necesitas, para cuando lo necesitas, quien crees que podría aportarlo?' 
+                  : 'Indica en qué puedes ayudar. Cuanto puedes aportar, cuando, a quien? Gracias!'
+              }
+              value={form.description}
+              onChange={(e) => handleChange(e, 'description')}   
+              />
+            { section === 'we_need_help' &&  <ButtonHelpMe onClick={createUser}>PEDIR AYUDA</ButtonHelpMe> }
+            { section === 'i_want_to_help' &&  <ButtonHelpMe onClick={createUser}>AYUDAR</ButtonHelpMe> }
           </HelpForm>
       }
 
-      { section === 'i_want_to_help' && 
-        <div>I want to help</div>
-      }
-
       { section === 'hospitals' && 
-        <div>
-          <Title2><span role='img'>🏥</span> Hospitales de ...
+        <List>
+          <Title2>🏥 Hospitales de ...
           <Filter>
             <Select>
               <option>Selecciona una provincia:</option>
@@ -118,7 +127,7 @@ export const App = observer(() => {
               </Buttons>
             </Hospital>
           ))}
-        </div>
+        </List>
       }
       <Footer>
         Gracias por ayudar. (r) Para más información covid2019hub@gmail.com
@@ -129,11 +138,15 @@ export const App = observer(() => {
 
 export default App;
 
+const List = styled.div`
+  width: 100%;
+`
 const FormResponse = styled.div`
   padding: 40px 0 0 0;
 `
 const HelpForm = styled.div`
   padding: 20px 0;
+  width: 100%;
 `
 const Input = styled.input`
   height: 40px;
