@@ -1,5 +1,5 @@
 import routes from './routes';
-import { POST, GET, ajaxTo, isSuccessful } from './tools';
+import { POST, ajaxTo, isSuccessful } from './tools';
 
 const restClient = {
   users: {

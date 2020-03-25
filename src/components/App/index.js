@@ -29,7 +29,7 @@ export const App = observer(() => {
       lang: 'es-es',
       category: 'hospital',
       type: 'receiver'
-    })
+    }, (err, data) => console.log('Err', err, 'Data', data))
   }
 
   return (
