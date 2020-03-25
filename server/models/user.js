@@ -14,7 +14,16 @@ var UserSchema = new Schema({
 	placeId: Number,
 	type: String,
 	phone: String,
-	password: { type: String, default: null, required: false }
+	password: { type: String, default: null, required: false },
+	
+	masks: Number,
+	visors: Number,
+	respirators: Number,
+	epis: Number,
+	hidrocloroquine: Number,
+	stretchers: Number,
+	money: Number,
+	printer: Number 
 });
 
 // UserSchema.pre('save', function(next) {

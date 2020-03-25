@@ -2,31 +2,42 @@ export default [
   {
     id: 'masks',
     name: 'Mascarillas',
-    types: ['proteccion']
+    types: ['ffp1', 'ffp2', 'ffp3', 'quirurgicas', 'otro'],
+    uses: ['proteccion']
   },
   {
     id: 'visors',
     name: 'Viseras',
-    types: ['proteccion']
+    uses: ['proteccion']
   },
   {
     id: 'respirators',
     name: 'Respiradores',
-    types: ['tratamiento']
+    uses: ['tratamiento']
   },
   {
     id: 'epis',
     name: 'Epis',
-    types: ['proteccion']
+    uses: ['proteccion']
   },
   {
     id: 'hidrocloroquine',
     name: 'Hidroxicloroquina',
-    types: ['tratamiento']
+    uses: ['tratamiento']
   },
   {
     id: 'stretchers',
     name: 'Camillas',
-    types: ['tratamiento']
+    uses: ['tratamiento']
+  },
+  {
+    id: 'money',
+    name: 'Dinero',
+    uses: []
+  },
+  {
+    id: 'printer',
+    name: 'Impresora 3D',
+    uses: []
   }
 ]

@@ -8,6 +8,7 @@ import places from '../../db/places'
 import hospitals from '../../db/hospitals'
 import { useUXStore } from '../../index.js'
 import restClient from '../../network/main_server/rest_api_client'
+import products from '../../db/products'
 
 const orderedPlaces = _.chain(places).orderBy(['nm']).value()
 
@@ -40,7 +41,15 @@ export const App = observer(() => {
       isRegistered: false,
       lang: 'es-es',
       category: form.category,
-      type: section === 'we_need_help' ? 'receiver' : 'donor'
+      type: section === 'we_need_help' ? 'receiver' : 'donor',
+      masks: form.masks,
+      visors: form.visors,
+      respirators: form.respirators,
+      epis: form.epis,
+      hidrocloroquine: form.hidrocloroquine,
+      stretchers: form.stretchers,
+      money: form.money,
+      printer: form.printer 
     }, (err, data) => {
       setResponse({ err, data })
     })
@@ -71,26 +80,26 @@ export const App = observer(() => {
         <div>
           <Title3>{section === 'we_need_help' ? 'Ayuda!' : 'Ayudar'}</Title3>
           <HelpForm>
-          <div style={{ marginBottom: 5, width: '100%' }}>
-            { section === 'we_need_help' &&
-              <Select value={form.category} onChange={(e) => handleChange(e, 'category')}>
-                <option value='null'>Destino</option>
-                <option value='hospital'>Hospital</option>
-                <option value='pharm'>Farmacia</option>
-                <option value='supermarket'>Supermercado</option>
-                <option value='person'>Persona</option>
-                <option value='other'>Otro</option>
-              </Select>
-            }
-            
-            { section === 'i_want_to_help' && 
-              <Select value={form.category} onChange={(e) => handleChange(e, 'category')}>
-                <option value='null'>Soy/Tengo ...</option>
-                <option value='3dprinter'>Impresora 3D</option>
-                <option value='specialist'>Especialista</option>
-                <option value='other'>Otro</option>
-              </Select> 
-            }
+            <div style={{ marginBottom: 5, width: '100%' }}>
+              { section === 'we_need_help' &&
+                <Select value={form.category} onChange={(e) => handleChange(e, 'category')}>
+                  <option value='null'>Destino</option>
+                  <option value='hospital'>Hospital</option>
+                  <option value='pharm'>Farmacia</option>
+                  <option value='supermarket'>Supermercado</option>
+                  <option value='person'>Persona</option>
+                  <option value='other'>Otro</option>
+                </Select>
+              }
+              
+              { section === 'i_want_to_help' && 
+                <Select value={form.category} onChange={(e) => handleChange(e, 'category')}>
+                  <option value='null'>Soy/Tengo ...</option>
+                  <option value='3dprinter'>Impresora 3D</option>
+                  <option value='specialist'>Especialista</option>
+                  <option value='other'>Otro</option>
+                </Select> 
+              }
             </div>
             <div style={{ marginBottom: 5 }}>
               <Select value={form.placeId} onChange={(e) => handleChange(e, 'placeId')}>
@@ -101,6 +110,29 @@ export const App = observer(() => {
             <Input type='text' placeholder='Nombre y apellidos' value={form.name} onChange={(e) => handleChange(e, 'name')} ></Input>
             <Input type='email' placeholder='Email' value={form.email} onChange={(e) => handleChange(e, 'email')} ></Input>
             <Input type='tel' placeholder='Telefono' value={form.phone} onChange={(e) => handleChange(e, 'phone')} ></Input>
+            
+            <ProductList>
+            { products.map(p => (
+              <ProductItem>
+                <ProductName>
+                  {p.name}
+                </ProductName>
+                <ProductQuantity>
+                  <Select value={form[p.id]} onChange={(e) => handleChange(e, p.id)}>
+                    <option value={0}>0</option>
+                    <option value={1}>+ 1</option>
+                    <option value={10}>+ 10</option>
+                    <option value={50}>+ 50</option>
+                    <option value={200}>+ 200</option>
+                    <option value={1000}>+ 1000</option>
+                    <option value={5000}>+ 5000</option>
+                    <option value={10000}>+ 10000</option>
+                  </Select>
+                </ProductQuantity>
+              </ProductItem>
+            ))}
+            </ProductList>
+
             <Textarea 
               placeholder={ 
                 section === 'we_need_help' 
@@ -150,6 +182,23 @@ export const App = observer(() => {
 })
 
 export default App;
+
+const ProductList = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+`
+const ProductItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+`
+const ProductName = styled.div`
+  flex: 1;
+`
+const ProductQuantity = styled.div`
+  flex: 1;
+`
 
 const List = styled.div`
   width: 100%;
