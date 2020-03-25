@@ -15,6 +15,7 @@ var UserSchema = new Schema({
 	placeId: Number,
 	type: String,
 	phone: String,
+	code: String,
 	password: { type: String, default: null, required: false },
 	
 	masks: Number,

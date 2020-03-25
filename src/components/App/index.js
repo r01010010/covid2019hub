@@ -37,6 +37,8 @@ export const App = observer(() => {
       email: form.email,
       name: form.name,
       center: form.center,
+      phone: form.phone,
+      code: form.code,
       description: form.description,
       placeId: parseInt(form.placeId),
       isRegistered: false,
@@ -50,7 +52,7 @@ export const App = observer(() => {
       hidrocloroquine: form.hidrocloroquine,
       stretchers: form.stretchers,
       money: form.money,
-      printer: form.printer 
+      printer: form.printer
     }, (err, data) => {
       setResponse({ err, data })
     })
@@ -64,6 +66,7 @@ export const App = observer(() => {
         {/* <div><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/pager_1f4df.png" width="120" height="120"></img></div> */}
         <div>EMERGENCIA</div>
         <div style={{ fontSize: 35 }}>COVID2019</div>
+        <div style={{ fontSize: 18, color: '#999', fontWeight: 400, marginTop: 3, fontFamily: 'Helvetica' }}>Escríbenos <u style={{ color: '#999' }}>covid2019hub@gmail.com</u></div>
       </Title>
 
       <Welcome>
@@ -73,7 +76,8 @@ export const App = observer(() => {
       <MenuButtons>
         <Button selected={section === 'we_need_help'} onClick={() => activate('we_need_help')} style={{ background: 'red', color: 'white', border: '1px solid #ff0000' }}>🆘 S O S !</Button>
         <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')} color='white'><img src="https://media-edg.barcelona.cat/wp-content/uploads/2014/05/RedCross.png" width="15"/> AYUDAR</Button>
-        <Button selected={section === 'hospitals'} onClick={() => activate('hospitals')} style={{ background: '#ddd', color: '#444'}}>🏥 HOSPITALES</Button>
+        {/* <Button selected={section === 'hospitals'} onClick={() => activate('hospitals')} style={{ background: '#ddd', color: '#444'}}>🏥 HOSPITALES</Button>
+        <Button selected={section === 'manuals'} onClick={() => activate('manuals')} style={{ background: '#ddd', color: '#444', height: 80}}>🖍 MANUALES <div style={{ color: '#aaa', fontWeight: 400, fontSize: 15, marginTop: 3}}>HAZLO TU MISM@ EN CASA</div></Button> */}
         {/* <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')} color='white' style={{ background: '#ddd', color: '#444'}}><img src="https://cdn.onlinewebfonts.com/svg/img_564932.png" width="20"/> &nbsp;FARMACIAS</Button>
         <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')} color='white' style={{ background: '#ddd', color: '#444'}}><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/237/shopping-trolley_1f6d2.png" width="20"/> &nbsp;SUPERMERCADOS</Button> */}
 
@@ -82,8 +86,8 @@ export const App = observer(() => {
       { response && <FormResponse><div style={{ fontSize: 40 }}>GRACIAS</div>Estamos verificando tu información. Si todo es correcto aparecerá en la web en unos minutos. Gracias!</FormResponse> }
 
       { ((section === 'we_need_help' || section === 'i_want_to_help') && !response) && 
-        <div>
-          <Title3>{section === 'we_need_help' ? 'Ayuda!' : 'Ayudar'}</Title3>
+        <div style={{ width: '100%'}}>
+          <Title3>{section === 'we_need_help' ? '🆘 SOS!' : <><img src="https://media-edg.barcelona.cat/wp-content/uploads/2014/05/RedCross.png" width="20"/> Ayudar </>}</Title3>
           {section === 'we_need_help' ? 
             <div style={{ marginTop: 8 }}>Trabajas en un Hospital u otro centro que necesita ayuda? Usa este formulario para solicitarla.</div>
           : 
@@ -119,6 +123,8 @@ export const App = observer(() => {
               </Select>
             </div>
             <Input type='text' placeholder='Centro (Ej. Hospital Santa Cristina)' value={form.center} onChange={(e) => handleChange(e, 'center')} ></Input>
+            <Input type='text' placeholder='Código' value={form.code} onChange={(e) => handleChange(e, 'code')} ></Input>
+            <div style={{ margin: '5px 0 20px 0', fontSize: 13, color: '#999'}}>Si eres un hospital, consultalo aquí <a href="https://www.mscbs.gob.es/ciudadanos/centrosCA.do?metodo=busquedaCa" style={{ color: '#999'}} target='_blank'>www.mscbs.gob.es/ciudadanos/centrosCA.do?metodo=busquedaCa</a></div>
             <Input type='text' placeholder='Nombre y apellidos' value={form.name} onChange={(e) => handleChange(e, 'name')} ></Input>
             <Input type='email' placeholder='Email' value={form.email} onChange={(e) => handleChange(e, 'email')} ></Input>
             <Input type='tel' placeholder='Telefono' value={form.phone} onChange={(e) => handleChange(e, 'phone')} ></Input>
@@ -176,7 +182,8 @@ export const App = observer(() => {
               <HDescription><a href={`https://www.google.com/maps/place/${hospital.nm.split(' ').join('+')}+${hospital.address.split(' ').join('+')}`} target='_blank' rel='noopener noreferrer'>{hospital.address}</a></HDescription>
               <HItem>😷 Mascarillas {hospital.status.masks.state }</HItem>
               <HItem>♻️ Respiradores {hospital.status.respirators.state}</HItem>
-              <HItem>🥋 Epis {hospital.status.epis.state}</HItem>
+              <HItem>🥼 Epis {hospital.status.epis.state}</HItem>
+              <HItem>🥽 Gafas 0</HItem>
               <Buttons>
                 <Button><img src="https://media-edg.barcelona.cat/wp-content/uploads/2014/05/RedCross.png" width="15"></img> AYUDAR</Button>
               </Buttons>
@@ -185,6 +192,14 @@ export const App = observer(() => {
           { filteredHospitals.length === 0 && <div>No hay datos para esta provincia.</div>}
         </List>
       }
+
+      { section === 'manuals' && <div style={{ width: '100%' }}>
+          <Title3>🖍 Manuales</Title3>
+          <div style={{ marginTop: 8 }}>Manuales para crear en tu casa todo lo que necesitas para protegerte.</div>
+
+        </div>
+      }
+
       <Footer>
         <div>Gracias por ayudar. (r) </div>
         <div>Para más información covid2019hub@gmail.com</div>
@@ -280,7 +295,7 @@ const Title2 = styled.div`
 `
 const Title3 = styled.div`
   font-size: 30px;
-  padding: 10px 0 5px 0;
+  padding: 25px 0 5px 0;
   font-weight: 600;
 `
 const Hospital = styled.div`
