@@ -71,12 +71,15 @@ export const App = observer(() => {
       </Welcome>
 
       <MenuButtons>
-        <Button selected={section === 'we_need_help'} onClick={() => activate('we_need_help')} style={{ background: 'red', color: 'white', border: '1px solid #ff0000' }}>🆘 AYUDA!</Button>
+        <Button selected={section === 'we_need_help'} onClick={() => activate('we_need_help')} style={{ background: 'red', color: 'white', border: '1px solid #ff0000' }}>🆘 S O S !</Button>
         <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')} color='white'><img src="https://media-edg.barcelona.cat/wp-content/uploads/2014/05/RedCross.png" width="15"/> AYUDAR</Button>
         <Button selected={section === 'hospitals'} onClick={() => activate('hospitals')} style={{ background: '#ddd', color: '#444'}}>🏥 HOSPITALES</Button>
+        {/* <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')} color='white' style={{ background: '#ddd', color: '#444'}}><img src="https://cdn.onlinewebfonts.com/svg/img_564932.png" width="20"/> &nbsp;FARMACIAS</Button>
+        <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')} color='white' style={{ background: '#ddd', color: '#444'}}><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/237/shopping-trolley_1f6d2.png" width="20"/> &nbsp;SUPERMERCADOS</Button> */}
+
       </MenuButtons>
 
-      { response && <FormResponse>Estamos verificando tu información. Si todo es correcto aparecerá en la web en unos minutos. Gracias!</FormResponse> }
+      { response && <FormResponse><div style={{ fontSize: 40 }}>GRACIAS</div>Estamos verificando tu información. Si todo es correcto aparecerá en la web en unos minutos. Gracias!</FormResponse> }
 
       { ((section === 'we_need_help' || section === 'i_want_to_help') && !response) && 
         <div>
@@ -214,6 +217,7 @@ const List = styled.div`
 `
 const FormResponse = styled.div`
   padding: 40px 0 0 0;
+  text-align: center;
 `
 const HelpForm = styled.div`
   padding: 20px 0;
@@ -311,7 +315,7 @@ const Button = styled.button`
 `
 const ButtonHelpMe = styled.button`
   border-radius: 5px;
-  height: 40px;
+  height: 50px;
   font-weight: 600;
   font-size: 15px;
   color: white;
