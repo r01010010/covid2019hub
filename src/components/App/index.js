@@ -45,8 +45,8 @@ export const App = observer(() => {
   return (
     <>
       <Title>
-        <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/pager_1f4df.png" width="120" height="120"></img>
-        COVID2019 HUB
+        {/* <div><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/pager_1f4df.png" width="120" height="120"></img></div> */}
+        <div>COVID2019 HUB</div>
       </Title>
 
       <Welcome>
@@ -54,13 +54,16 @@ export const App = observer(() => {
       </Welcome>
 
       <MenuButtons>
-        <Button selected={section === 'hospitals'} onClick={() => activate('hospitals')}>Ver Estado Hospitales</Button>
-        <Button selected={section === 'we_need_help'} onClick={() => activate('we_need_help')}>Necesito ayuda</Button>
-        <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')}>Quiero ayudar</Button>
+        <Button selected={section === 'we_need_help'} onClick={() => activate('we_need_help')} style={{ background: 'red', color: 'white', border: '1px solid #ff0000' }}>🆘 AYUDA!</Button>
+        <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')} color='white'><img src="https://media-edg.barcelona.cat/wp-content/uploads/2014/05/RedCross.png" width="15"/> AYUDAR</Button>
+        <Button selected={section === 'hospitals'} onClick={() => activate('hospitals')} style={{ background: '#ddd', color: '#444'}}>🏥 HOSPITALES</Button>
       </MenuButtons>
 
       { response && <FormResponse>Estamos verificando tu información. Si todo es correcto aparecerá en la web en unos minutos. Gracias!</FormResponse> }
-      { ((section === 'we_need_help' || section === 'i_want_to_help') && !response) && <HelpForm>
+      { ((section === 'we_need_help' || section === 'i_want_to_help') && !response) && 
+        <div>
+          <Title3>{section === 'we_need_help' ? 'Ayuda!' : 'Ayudar'}</Title3>
+          <HelpForm>
           <div style={{ marginBottom: 5, width: '100%' }}>
             { section === 'we_need_help' &&
               <Select value={form.category} onChange={(e) => handleChange(e, 'category')}>
@@ -103,6 +106,7 @@ export const App = observer(() => {
             { section === 'we_need_help' &&  <ButtonHelpMe onClick={createUser}>PEDIR AYUDA</ButtonHelpMe> }
             { section === 'i_want_to_help' &&  <ButtonHelpMe onClick={createUser}>AYUDAR</ButtonHelpMe> }
           </HelpForm>
+        </div>
       }
 
       { section === 'hospitals' && 
@@ -130,7 +134,8 @@ export const App = observer(() => {
         </List>
       }
       <Footer>
-        Gracias por ayudar. (r) Para más información covid2019hub@gmail.com
+        <div>Gracias por ayudar. (r) </div>
+        <div>Para más información covid2019hub@gmail.com</div>
       </Footer>
     </>
   );
@@ -153,7 +158,7 @@ const Input = styled.input`
   border-radius: 5px;
   width: 100%;
   padding-left: 10px;
-  font-size: 14px;
+  font-size: 16px;
   border: none;
   margin-bottom: 5px;
   color: black;
@@ -163,7 +168,7 @@ const Textarea = styled.textarea`
   border-radius: 5px;
   width: 100%;
   padding-left: 10px;
-  font-size: 14px;
+  font-size: 16px;
   border: none;
   margin-bottom: 5px;
   color: black;
@@ -176,21 +181,26 @@ const Title = styled.div`
   padding-top: 20px;
   justify-content: center;
   align-items: center;
+  width: 100%;
 `
 const Welcome = styled.div`
-  font-size: 14px;
+  font-size: 16px;
   padding: 10px 0;
 `
 const MenuButtons = styled.div`
-  flex-direction: row;
+  flex-direction: column;
   padding: 10px 0 0 0;
+  width: 100%;
 
   & button {
-    color: white;
+    color: #FB0000;
+    font-size: 18px;
+    font-weight: 800;
     border: none;
     padding: 10px;
-    margin-right: 20px;
-    background-color: ${props => props.selected ? 'green' : 'red'};
+    margin-bottom: 10px;
+    background-color: white;
+    width: 100%;
   }
 `
 const Title2 = styled.div`
@@ -198,21 +208,25 @@ const Title2 = styled.div`
   padding: 30px 0 10px 0;
   font-weight: 600;
 `
+const Title3 = styled.div`
+  font-size: 30px;
+  padding: 10px 0 5px 0;
+  font-weight: 600;
+`
 const Hospital = styled.div`
   padding: 15px 0;
 `
 const HName = styled.div`
-  font-size: 20px;
+  font-size: 25px;
   padding-bottom: 10px;
   font-weight: 600;
 `
 const HDescription = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   padding-bottom: 10px;
-
 `
 const HItem = styled.div`
-  font-size: 15px;
+  font-size: 18px;
   padding-bottom: 4px;
 `
 const Buttons = styled.div`
@@ -220,11 +234,14 @@ const Buttons = styled.div`
 `
 const Button = styled.button`
   border-radius: 5px;
-  height: 40px;
+  height: 50px;
   font-weight: 600;
   font-size: 15px;
   color: #ff0000;
   cursor: pointer;
+  background-color: #fff;
+  width: 100%;
+  border: 1px solid #d1d1d1;
 `
 const ButtonHelpMe = styled.button`
   border-radius: 5px;
@@ -270,9 +287,16 @@ const Select = styled.select`
   background-size: .65em auto, 100%;
 `
 const Footer = styled.div` 
-  color: #333;
+  color: #ff0000;
   font-size: 12px;
   padding: 30px 0;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & div {
+    color: #999;
+ 
+  }
 `
