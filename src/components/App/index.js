@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 /* eslint-disable no-console */
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite'
 import _ from 'lodash'
 import styled from 'styled-components'
@@ -12,24 +12,35 @@ import restClient from '../../network/main_server/rest_api_client'
 const orderedPlaces = _.chain(places).orderBy(['nm']).value()
 
 export const App = observer(() => {
+  const [form, setForm] = useState({});
+  const [response, setResponse] = useState(null);
+
   const store = useUXStore()
   const { section } = store
-
+  
   const activate = (section) => {
     store.section = section;
   }
 
+  const handleChange = (e, field) => {
+    setForm({ ...form, [field]: e.target.value})
+  }
+
   const createUser = () => {
     restClient.users.create({
-      email: 'paloma@jejeje.com',
-      name: 'Paloma',
-      signup_date: Date.now(),
-      description: 'Hola soy guay',
+      email: form.email,
+      name: form.name,
+      description: form.description,
+      placeId: parseInt(form.placeId),
       isRegistered: false,
       lang: 'es-es',
-      category: 'hospital',
+      category: form.category,
       type: 'receiver'
-    }, (err, data) => console.log('Err', err, 'Data', data))
+    }, (err, data) => {
+      setResponse({ err, data })
+      setTimeout(() => setResponse(null), 1000 * 10)
+      activate(null)
+    })
   }
 
   return (
@@ -47,35 +58,38 @@ export const App = observer(() => {
         <Button selected={section === 'hospitals'} onClick={() => activate('hospitals')}>Ver Estado Hospitales</Button>
         <Button selected={section === 'we_need_help'} onClick={() => activate('we_need_help')}>Necesito ayuda</Button>
         <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')}>Quiero ayudar</Button>
-        <Button onClick={() => createUser()}>Create user</Button>
       </MenuButtons>
 
-      { section === 'we_need_help' && 
-        <HelpForm>
-          <form>
-            <div style={{ marginBottom: 5 }}>
-              <Select>
-                <option value='null'>Destino</option>
-                <option value='hospital'>Hospital</option>
-                <option value='pharm'>Farmacia</option>
-                <option value='supermarket'>Supermercado</option>
-                <option value='person'>Persona</option>
-                <option value='other'>Otro</option>
-              </Select>
-            </div>
-            <div style={{ marginBottom: 5 }}>
-              <Select>
-                <option>Provincia</option>
-                { orderedPlaces.map(place => (<option value={place.id} key={place.id}>{place.nm}</option>)) }
-              </Select>
-            </div>
-            <Input type='text' placeholder='Nombre y apellidos'></Input>
-            <Input type='email' placeholder='Email'></Input>
-            <Input type='tel' placeholder='Telefono'></Input>
-            <Textarea placeholder='Indica qué necesitas, cuánto necesitas, para cuando lo necesitas, quien crees que podría aportarlo?' />
-            <ButtonHelpMe>PEDIR AYUDA</ButtonHelpMe>
-          </form>
-        </HelpForm>
+      { response && <FormResponse>Estamos verificando tu información. Si todo es correcto aparecerá en la web en unos minutos. Gracias!</FormResponse> }
+      { (section === 'we_need_help' && !response) && <HelpForm>
+           
+              <div style={{ marginBottom: 5 }}>
+                <Select value={form.category} onChange={(e) => handleChange(e, 'category')}>
+                  <option value='null'>Destino</option>
+                  <option value='hospital'>Hospital</option>
+                  <option value='pharm'>Farmacia</option>
+                  <option value='supermarket'>Supermercado</option>
+                  <option value='person'>Persona</option>
+                  <option value='other'>Otro</option>
+                </Select>
+              </div>
+              <div style={{ marginBottom: 5 }}>
+                <Select value={form.placeId} onChange={(e) => handleChange(e, 'placeId')}>
+                  <option>Provincia</option>
+                  { orderedPlaces.map(place => (<option value={parseInt(place.id)} key={place.id}>{place.nm}</option>)) }
+                </Select>
+              </div>
+              <Input type='text' placeholder='Nombre y apellidos' value={form.name} onChange={(e) => handleChange(e, 'name')} ></Input>
+              <Input type='email' placeholder='Email' value={form.email} onChange={(e) => handleChange(e, 'email')} ></Input>
+              <Input type='tel' placeholder='Telefono' value={form.phone} onChange={(e) => handleChange(e, 'phone')} ></Input>
+              <Textarea 
+                placeholder='Indica qué necesitas, cuánto necesitas, para cuando lo necesitas, quien crees que podría aportarlo?' 
+                value={form.description}
+                onChange={(e) => handleChange(e, 'description')}   
+                />
+              <ButtonHelpMe onClick={createUser}>PEDIR AYUDA</ButtonHelpMe>
+            
+          </HelpForm>
       }
 
       { section === 'i_want_to_help' && 
@@ -107,7 +121,7 @@ export const App = observer(() => {
         </div>
       }
       <Footer>
-        Autor Paloma Jiménez &nbsp;&nbsp;&nbsp;<b>Github</b> &nbsp; <a href='https://github.com/r01010010' rel='noopener noreferrer' target='_blank'>https://github.com/r01010010</a>
+        Gracias por ayudar. (r) Para más información covid2019hub@gmail.com
       </Footer>
     </>
   );
@@ -115,6 +129,9 @@ export const App = observer(() => {
 
 export default App;
 
+const FormResponse = styled.div`
+  padding: 40px 0 0 0;
+`
 const HelpForm = styled.div`
   padding: 20px 0;
 `
