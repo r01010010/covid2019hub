@@ -7,6 +7,7 @@ var UserSchema = new Schema({
 	email:  { type: String },
 	uuid: String,
 	name: String,
+	center: String,
 	signup_date: { type: Date, default: Date.now },
 	description: String,
 	lang: String,
@@ -19,7 +20,7 @@ var UserSchema = new Schema({
 	address: String,
 	for_listing: { type: Boolean, default: false },
 	known_state: { type: Boolean, default: false },
-	
+
 	masks: Number,
 	visors: Number,
 	respirators: Number,
