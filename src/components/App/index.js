@@ -121,6 +121,8 @@ export const App = observer(() => {
                 <Select value={form.category} onChange={(e) => handleChange(e, 'category')}>
                   <option value='null'>Soy/Tengo ...</option>
                   <option value='3dprinter'>Impresora 3D</option>
+                  <option value='transporte'>Transporte</option>
+                  <option value='costura'>Costura</option>
                   <option value='specialist'>Especialista</option>
                   <option value='other'>Otro</option>
                 </Select> 
@@ -146,16 +148,7 @@ export const App = observer(() => {
                   {p.name}
                 </ProductName>
                 <ProductQuantity>
-                  <Select value={form[p.id]} onChange={(e) => handleChange(e, p.id)}>
-                    <option value={0}>0</option>
-                    <option value={1}>+ 1</option>
-                    <option value={10}>+ 10</option>
-                    <option value={50}>+ 50</option>
-                    <option value={200}>+ 200</option>
-                    <option value={1000}>+ 1000</option>
-                    <option value={5000}>+ 5000</option>
-                    <option value={10000}>+ 10000</option>
-                  </Select>
+                  <Input type="Number" value={form[p.id]} onChange={(e) => handleChange(e, p.id)} placeholder="0" />
                 </ProductQuantity>
               </ProductItem>
             ))}
