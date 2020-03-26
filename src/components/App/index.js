@@ -5,22 +5,26 @@ import { observer } from 'mobx-react-lite'
 import _ from 'lodash'
 import styled from 'styled-components'
 import places from '../../db/places'
-import hospitals from '../../db/hospitals'
 import { useUXStore } from '../../index.js'
 import restClient from '../../network/main_server/rest_api_client'
 import products from '../../db/products'
 
 const orderedPlaces = _.chain(places).orderBy(['nm']).value()
 
+export const Product = ({ label, qt, icon }) => <HItem>{icon} <span style={{ fontWeight: 500, width: 200, color: '#444'}}>{label}</span> {qt === 0 ? 'Cubierto' : !qt ? <span style={{ color: '#aaa' }}>N/C</span> : <span style={{ color: '#888'}}> <span style={{ color: 'red', fontWeight: 'bold' }}>{qt}</span></span>}</HItem>
+
+
 export const App = observer(() => {
   const [form, setForm] = useState({});
   const [response, setResponse] = useState(null);
+  const [mainList, setMainList] = useState([]);
 
   const store = useUXStore()
   const { section } = store
   
   const activate = (section) => {
     setResponse(null)
+    if (section === 'hospitals') getHospitals()
     store.section = section;
   }
 
@@ -30,35 +34,27 @@ export const App = observer(() => {
 
   const handleChangePlace = (e) => {
     store.placeId = parseInt(e.target.value)
+    getHospitals()
   }
 
   const createUser = () => {
     restClient.users.create({
-      email: form.email,
-      name: form.name,
-      center: form.center,
-      phone: form.phone,
-      code: form.code,
-      description: form.description,
+      ...form,
       placeId: parseInt(form.placeId),
-      isRegistered: false,
       lang: 'es-es',
-      category: form.category,
-      type: section === 'we_need_help' ? 'receiver' : 'donor',
-      masks: form.masks,
-      visors: form.visors,
-      respirators: form.respirators,
-      epis: form.epis,
-      hidrocloroquine: form.hidrocloroquine,
-      stretchers: form.stretchers,
-      money: form.money,
-      printer: form.printer
+      type: section === 'we_need_help' ? 'receiver' : 'donor'
     }, (err, data) => {
       setResponse({ err, data })
     })
   }
 
-  const filteredHospitals = hospitals.filter(h => h.placeId === store.placeId);
+  const getHospitals = () => {
+    restClient.users.get({ category: 'hospital', placeId: store.placeId || 'all' }, (err, hospitals) => {
+      setMainList(hospitals)
+    })
+  }
+
+  // const filteredHospitals = hospitals.filter(h => h.placeId === store.placeId);
 
   return (
     <>
@@ -76,8 +72,8 @@ export const App = observer(() => {
       <MenuButtons>
         <Button selected={section === 'we_need_help'} onClick={() => activate('we_need_help')} style={{ background: 'red', color: 'white', border: '1px solid #ff0000' }}>🆘 S O S !</Button>
         <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')} color='white'><img src="https://media-edg.barcelona.cat/wp-content/uploads/2014/05/RedCross.png" width="15"/> AYUDAR</Button>
-        {/* <Button selected={section === 'hospitals'} onClick={() => activate('hospitals')} style={{ background: '#ddd', color: '#444'}}>🏥 HOSPITALES</Button>
-        <Button selected={section === 'manuals'} onClick={() => activate('manuals')} style={{ background: '#ddd', color: '#444', height: 80}}>🖍 MANUALES <div style={{ color: '#aaa', fontWeight: 400, fontSize: 15, marginTop: 3}}>HAZLO TU MISM@ EN CASA</div></Button> */}
+        <Button selected={section === 'hospitals'} onClick={() => activate('hospitals')} style={{ background: '#ddd', color: '#444'}}>🏥 HOSPITALES</Button>
+        { /*<Button selected={section === 'manuals'} onClick={() => activate('manuals')} style={{ background: '#ddd', color: '#444', height: 80}}>🖍 MANUALES <div style={{ color: '#aaa', fontWeight: 400, fontSize: 15, marginTop: 3}}>HAZLO TU MISM@ EN CASA</div></Button> */}
         {/* <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')} color='white' style={{ background: '#ddd', color: '#444'}}><img src="https://cdn.onlinewebfonts.com/svg/img_564932.png" width="20"/> &nbsp;FARMACIAS</Button>
         <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')} color='white' style={{ background: '#ddd', color: '#444'}}><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/237/shopping-trolley_1f6d2.png" width="20"/> &nbsp;SUPERMERCADOS</Button> */}
 
@@ -101,6 +97,7 @@ export const App = observer(() => {
                   <option value='null'>Destino</option>
                   <option value='hospital'>Hospital</option>
                   <option value='pharm'>Farmacia</option>
+                  <option value='residency'>Residencia</option>
                   <option value='supermarket'>Supermercado</option>
                   <option value='person'>Persona</option>
                   <option value='other'>Otro</option>
@@ -176,20 +173,22 @@ export const App = observer(() => {
             </Select>
           </Filter>
           </Title2>
-          { filteredHospitals.map(hospital => (
+          { mainList.map(hospital => (
             <Hospital key={hospital.id}>
-              <HName>{hospital.nm}</HName>
-              <HDescription><a href={`https://www.google.com/maps/place/${hospital.nm.split(' ').join('+')}+${hospital.address.split(' ').join('+')}`} target='_blank' rel='noopener noreferrer'>{hospital.address}</a></HDescription>
-              <HItem>😷 Mascarillas {hospital.status.masks.state }</HItem>
-              <HItem>♻️ Respiradores {hospital.status.respirators.state}</HItem>
-              <HItem>🥼 Epis {hospital.status.epis.state}</HItem>
-              <HItem>🥽 Gafas 0</HItem>
-              <Buttons>
+              <HName>{hospital.name.toLowerCase().replace(/(^\w|\s\w)/g, m => m.toUpperCase())}</HName>
+              <HDescription>{hospital.description || 'Sin descripción'}</HDescription>
+              <HDescription><a href={`https://www.google.com/maps/place/${hospital.name.split(' ').join('+')}+${(hospital.address || '').split(' ').join('+')}`} target='_blank' rel='noopener noreferrer'>{hospital.address || ''}</a></HDescription>
+              <Product icon='😷' label='Mascarillas' qt={hospital.masks} />
+              <Product icon='♻️' label='Respiradores' qt={hospital.respirators} />
+              <Product icon='🥼' label='Epis' qt={hospital.epis} />
+              <Product icon='🥽' label='Viseras' qt={hospital.viseras} />
+              {/* <Buttons> 
                 <Button><img src="https://media-edg.barcelona.cat/wp-content/uploads/2014/05/RedCross.png" width="15"></img> AYUDAR</Button>
-              </Buttons>
+              </Buttons> */}
+              <div style={{ height: 1, background: '#888', marginTop: 20, opacity: 0.2 }}/>
             </Hospital>
           ))}
-          { filteredHospitals.length === 0 && <div>No hay datos para esta provincia.</div>}
+          { mainList.length === 0 && <div>No hay datos para esta provincia.</div>}
         </List>
       }
 
@@ -307,13 +306,17 @@ const HName = styled.div`
   font-weight: 600;
 `
 const HDescription = styled.div`
-  font-size: 14px;
+  font-size: 18px;
   padding-bottom: 10px;
+  color: #444;
 `
 const HItem = styled.div`
-  font-size: 18px;
+  font-size: 17px;
   padding-bottom: 4px;
 `
+const HNCLabel = styled.span``
+const HNQtInNeed = styled.span``
+
 const Buttons = styled.div`
   padding: 10px 0;
 `

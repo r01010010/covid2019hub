@@ -15,5 +15,18 @@ module.exports = {
 				cb(err, user);
 			}
 		});
+	},
+	get: function(filter, cb) {
+		console.log('received', filter)
+		
+		filter = {
+			...filter,
+			placeId: filter.placeId === 'all' ? { $exists: true } : `${filter.placeId}`,
+			for_listing: true,
+		}
+
+		console.log('sent', filter)
+
+		User.find(filter, cb);
 	}
 };

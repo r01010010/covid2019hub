@@ -8,7 +8,7 @@ const setRoutesApi = require('./server/routes/api');
 const setRoutesWeb = require('./server/routes/web');
 const cors = require('cors');
 
-mongoose.connect(config.database.uri).catch(err => {
+mongoose.connect(config.database.uri, { useNewUrlParser: true, useUnifiedTopology: true }).catch(err => {
   console.log('MONGODB CONNECTION ERROR');
 });
 
@@ -40,8 +40,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'build')));
 
-setRoutesWeb(app);
 setRoutesApi(app);
+setRoutesWeb(app);
 
 const port = process.env.PORT || 8080
 server.listen(port);  //listen on port 80

@@ -1,5 +1,4 @@
 var users   = require('../../lib/crud/users');
-var queries = require('../../lib/queries');
 
 // const isEmpty = function(str) {
 // 	return (!str || 0 === str.length);
@@ -59,6 +58,24 @@ const createUser = function(req, res, next) {
 // 	}
 // };
 
+var getUsers = function(req, res, next){
+  console.log('Request received for getUser');
+
+	users.get(req.params, function(err, users){
+		console.log(users)
+		if (err) {
+			res.status(500);
+			res.json({err: err});
+		} else if (!users){
+			console.log('no users found...');
+			res.status(204);
+			res.json({err: new Error('User not found')});
+		} else {
+			res.json(users);
+		}
+	});
+};
+
 // QUERIES
 var getUser = function(req, res, next){
   console.log('Request received for getUser');
@@ -68,7 +85,7 @@ var getUser = function(req, res, next){
 			err: new Error('Invalid user uuid')
 		});
 	} else {
-		queries.getUser(req.params.uuid, function(err, user){
+		users.getOne(req.params.uuid, function(err, user){
 			if (err) {
 				res.status(500);
 				res.json({err: err});
@@ -87,6 +104,7 @@ var getUser = function(req, res, next){
 
 module.exports = {
 	createUser: createUser,
+	getUsers: getUsers,
 	// updateUser: updateUser,
 	getUser: getUser
 }

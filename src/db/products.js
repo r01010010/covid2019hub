@@ -26,6 +26,11 @@ export default [
     uses: ['tratamiento']
   },
   {
+    id: 'azitromicina',
+    name: 'Azitromicina',
+    uses: ['tratamiento']
+  },
+  {
     id: 'stretchers',
     name: 'Camillas',
     uses: ['tratamiento']

@@ -4,10 +4,9 @@ const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 
 var UserSchema = new Schema({
-	email:  { type: String, index: true, unique: true},
+	email:  { type: String },
 	uuid: String,
 	name: String,
-	center: String,
 	signup_date: { type: Date, default: Date.now },
 	description: String,
 	lang: String,
@@ -17,6 +16,9 @@ var UserSchema = new Schema({
 	phone: String,
 	code: String,
 	password: { type: String, default: null, required: false },
+	address: String,
+	for_listing: { type: Boolean, default: false },
+	known_state: { type: Boolean, default: false },
 	
 	masks: Number,
 	visors: Number,
@@ -25,7 +27,8 @@ var UserSchema = new Schema({
 	hidrocloroquine: Number,
 	stretchers: Number,
 	money: Number,
-	printer: Number 
+	printer: Number,
+	history: Array
 });
 
 // UserSchema.pre('save', function(next) {
