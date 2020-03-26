@@ -16,7 +16,7 @@ const restClient = {
       });
     },
     get: (filter = {}, cb) => {
-      const uri = `${routes.basepath}${routes.users.get}/${filter.category}/${filter.placeId}`;
+      const uri = `${routes.basepath}${routes.users.get}/${filter.category}/${filter.placeId}/${filter.type}`;
       console.log(uri)
       ajaxTo(uri, GET, filter, null, (err, data, status) => {
 

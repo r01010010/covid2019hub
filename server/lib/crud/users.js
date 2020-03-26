@@ -18,10 +18,12 @@ module.exports = {
 	},
 	get: function(filter, cb) {
 		console.log('received', filter)
-		
+
 		filter = {
 			...filter,
+			category: filter.category === 'all' ? { $exists: true } : `${filter.category}`, 
 			placeId: filter.placeId === 'all' ? { $exists: true } : `${filter.placeId}`,
+			type: filter.type === 'all' ? { $exists: true } : `${filter.type}`,
 			for_listing: true,
 		}
 

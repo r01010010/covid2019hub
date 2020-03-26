@@ -13,6 +13,12 @@ const orderedPlaces = _.chain(places).orderBy(['nm']).value()
 
 export const Product = ({ label, qt, icon }) => <HItem>{icon} <span style={{ fontWeight: 500, width: 200, color: '#444'}}>{label}</span> {qt === 0 ? 'Cubierto' : !qt ? <span style={{ color: '#aaa' }}>N/C</span> : <span style={{ color: '#888'}}> <span style={{ color: 'red', fontWeight: 'bold' }}>{qt}</span></span>}</HItem>
 
+const placeNameById = (placeId) => {
+  console.log(placeId)
+  const place = places.find(({id}) => parseInt(id) === parseInt(placeId) )
+  console.log(place)
+  return place
+}
 
 export const App = observer(() => {
   const [form, setForm] = useState({});
@@ -24,7 +30,8 @@ export const App = observer(() => {
   
   const activate = (section) => {
     setResponse(null)
-    if (section === 'hospitals') getHospitals()
+    if (section === 'hospitals') getList({category: 'hospital',  type: 'all'})
+    if (section === 'donors') getList({category: 'all', type: 'donor'})
     store.section = section;
   }
 
@@ -34,8 +41,9 @@ export const App = observer(() => {
 
   const handleChangePlace = (e) => {
     store.placeId = parseInt(e.target.value)
-    getHospitals()
-  }
+    if (section === 'hospitals') getList({category: 'hospital',  type: 'all'})
+    if (section === 'donors') getList({category: 'all', type: 'donor'})
+   }
 
   const createUser = () => {
     restClient.users.create({
@@ -48,9 +56,9 @@ export const App = observer(() => {
     })
   }
 
-  const getHospitals = () => {
-    restClient.users.get({ category: 'hospital', placeId: store.placeId || 'all' }, (err, hospitals) => {
-      setMainList(hospitals)
+  const getList = (options) => {
+    restClient.users.get({ ...options, placeId: store.placeId || 'all' }, (err, list = []) => {
+      setMainList(list)
     })
   }
 
@@ -73,6 +81,7 @@ export const App = observer(() => {
         <Button selected={section === 'we_need_help'} onClick={() => activate('we_need_help')} style={{ background: 'red', color: 'white', border: '1px solid #ff0000' }}>🆘 S O S !</Button>
         <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')} color='white'><img src="https://media-edg.barcelona.cat/wp-content/uploads/2014/05/RedCross.png" width="15"/> AYUDAR</Button>
         <Button selected={section === 'hospitals'} onClick={() => activate('hospitals')} style={{ background: '#ddd', color: '#444'}}>🏥 HOSPITALES</Button>
+        <Button selected={section === 'donors'} onClick={() => activate('donors')} style={{ background: '#ddd', color: '#444'}}>👋🏻 DONANTES</Button>
         { /*<Button selected={section === 'manuals'} onClick={() => activate('manuals')} style={{ background: '#ddd', color: '#444', height: 80}}>🖍 MANUALES <div style={{ color: '#aaa', fontWeight: 400, fontSize: 15, marginTop: 3}}>HAZLO TU MISM@ EN CASA</div></Button> */}
         {/* <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')} color='white' style={{ background: '#ddd', color: '#444'}}><img src="https://cdn.onlinewebfonts.com/svg/img_564932.png" width="20"/> &nbsp;FARMACIAS</Button>
         <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')} color='white' style={{ background: '#ddd', color: '#444'}}><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/237/shopping-trolley_1f6d2.png" width="20"/> &nbsp;SUPERMERCADOS</Button> */}
@@ -163,9 +172,11 @@ export const App = observer(() => {
         </div>
       }
 
-      { section === 'hospitals' && 
+      { (section === 'hospitals' || section === 'donors') && 
         <List>
-          <Title2>🏥 Hospitales de ...
+          <Title2>
+          { section === 'hospitals' && <>🏥 Hospitales de ...</>}
+          { section === 'donors' && <>👋🏻 Donantes de ...</>}
           <Filter>
             <Select onChange={handleChangePlace}>
               <option>Selecciona una provincia:</option>
@@ -173,16 +184,19 @@ export const App = observer(() => {
             </Select>
           </Filter>
           </Title2>
-          { mainList.map(hospital => (
-            <Hospital key={hospital.id}>
-              <HName>{(hospital.center || '').toLowerCase().replace(/(^\w|\s\w)/g, m => m.toUpperCase()) || 'Desconocido'}</HName>
-              {/* <HDescription>{hospital.email}</HDescription> */}
-              <HDescription>{hospital.description || 'Sin descripción'}</HDescription>
-              {/* <HDescription><a href={`https://www.google.com/maps/place/${(hospital.center || '').split(' ').join('+')}+${(hospital.address || '').split(' ').join('+')}`} target='_blank' rel='noopener noreferrer'>{hospital.address || ''}</a></HDescription> */}
-              <Product icon='😷' label='Mascarillas' qt={hospital.masks} />
-              <Product icon='♻️' label='Respiradores' qt={hospital.respirators} />
-              <Product icon='🥼' label='Epis' qt={hospital.epis} />
-              <Product icon='🥽' label='Viseras' qt={hospital.viseras} />
+          { mainList.map(item => (
+            <Hospital key={item.id}>
+              <HName>{(item.center || '').toLowerCase().replace(/(^\w|\s\w)/g, m => m.toUpperCase()) || item.name.toLowerCase().replace(/(^\w|\s\w)/g, m => m.toUpperCase())} <HLocation>📍{placeNameById(item.placeId).nm}</HLocation></HName>
+              
+              <HEmail>✉️{(item.email || '').toLowerCase() || 'Desconocido'}</HEmail>
+              {/* <HDescription>{item.email}</HDescription> */}
+              <HDescription>{item.description || 'Sin descripción'}</HDescription>
+              {/* <HDescription><a href={`https://www.google.com/maps/place/${(item.center || '').split(' ').join('+')}+${(item.address || '').split(' ').join('+')}`} target='_blank' rel='noopener noreferrer'>{item.address || ''}</a></HDescription> */}
+              <Product icon='😷' label='Mascarillas' qt={item.masks} />
+              <Product icon='♻️' label='Respiradores' qt={item.respirators} />
+              <Product icon='🥋' label='Epis' qt={item.epis} />
+              <Product icon='🥼' label='Batas' qt={item.coats} />
+              <Product icon='🥽' label='Viseras' qt={item.viseras} />
               {/* <Buttons> 
                 <Button><img src="https://media-edg.barcelona.cat/wp-content/uploads/2014/05/RedCross.png" width="15"></img> AYUDAR</Button>
               </Buttons> */}
@@ -305,11 +319,27 @@ const HName = styled.div`
   font-size: 25px;
   padding-bottom: 10px;
   font-weight: 600;
+  flex-direction: column;
+  display: flex;
+`
+const HLocation = styled.div`
+  font-weight: 400;
+  font-size: 18px;
+  padding-left: 0px;
+  padding-top: 10px;
+  color: #444;
+`
+const HEmail = styled.div`
+  font-weight: 400;
+  font-size: 18px;
+  margin-bottom: 20px;
+  margin-top: 0px;
+  color: #444;
 `
 const HDescription = styled.div`
   font-size: 18px;
   padding-bottom: 10px;
-  color: #444;
+  color: #999;
 `
 const HItem = styled.div`
   font-size: 17px;
@@ -386,6 +416,5 @@ const Footer = styled.div`
 
   & div {
     color: #999;
- 
   }
 `

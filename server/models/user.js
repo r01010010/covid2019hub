@@ -29,7 +29,8 @@ var UserSchema = new Schema({
 	stretchers: Number,
 	money: Number,
 	printer: Number,
-	history: Array
+	coats: Number,
+	history: Array,
 });
 
 // UserSchema.pre('save', function(next) {
