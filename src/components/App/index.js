@@ -20,6 +20,10 @@ const placeNameById = (placeId) => {
   return place
 }
 
+const normalizeString = (str = '') => {
+  return str.toLowerCase().replace(/(^\w|\s\w)/g, m => m.toUpperCase())
+}
+
 export const App = observer(() => {
   const [form, setForm] = useState({});
   const [response, setResponse] = useState(null);
@@ -186,9 +190,8 @@ export const App = observer(() => {
           </Title2>
           { mainList.map(item => (
             <Hospital key={item.id}>
-              <HName>{(item.center || '').toLowerCase().replace(/(^\w|\s\w)/g, m => m.toUpperCase()) || item.name.toLowerCase().replace(/(^\w|\s\w)/g, m => m.toUpperCase())} <HLocation>📍{placeNameById(item.placeId).nm}</HLocation></HName>
-              
-              <HEmail>✉️{(item.email || '').toLowerCase() || 'Desconocido'}</HEmail>
+              <HName>{normalizeString(item.center) || normalizeString(item.name)} <HLocation>📍{placeNameById(item.placeId).nm}</HLocation></HName>
+              <HEmail>✉️{normalizeString(item.name)} ({(item.email || '').toLowerCase() || 'Desconocido'})</HEmail>
               {/* <HDescription>{item.email}</HDescription> */}
               <HDescription>{item.description || 'Sin descripción'}</HDescription>
               {/* <HDescription><a href={`https://www.google.com/maps/place/${(item.center || '').split(' ').join('+')}+${(item.address || '').split(' ').join('+')}`} target='_blank' rel='noopener noreferrer'>{item.address || ''}</a></HDescription> */}
@@ -321,6 +324,9 @@ const HName = styled.div`
   font-weight: 600;
   flex-direction: column;
   display: flex;
+`
+const HContact = styled.div`
+
 `
 const HLocation = styled.div`
   font-weight: 400;
