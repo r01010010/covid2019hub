@@ -175,9 +175,10 @@ export const App = observer(() => {
           </Title2>
           { mainList.map(hospital => (
             <Hospital key={hospital.id}>
-              <HName>{hospital.name.toLowerCase().replace(/(^\w|\s\w)/g, m => m.toUpperCase())}</HName>
+              <HName>{(hospital.center || '').toLowerCase().replace(/(^\w|\s\w)/g, m => m.toUpperCase()) || 'Desconocido'}</HName>
+              {/* <HDescription>{hospital.email}</HDescription> */}
               <HDescription>{hospital.description || 'Sin descripción'}</HDescription>
-              <HDescription><a href={`https://www.google.com/maps/place/${hospital.name.split(' ').join('+')}+${(hospital.address || '').split(' ').join('+')}`} target='_blank' rel='noopener noreferrer'>{hospital.address || ''}</a></HDescription>
+              {/* <HDescription><a href={`https://www.google.com/maps/place/${(hospital.center || '').split(' ').join('+')}+${(hospital.address || '').split(' ').join('+')}`} target='_blank' rel='noopener noreferrer'>{hospital.address || ''}</a></HDescription> */}
               <Product icon='😷' label='Mascarillas' qt={hospital.masks} />
               <Product icon='♻️' label='Respiradores' qt={hospital.respirators} />
               <Product icon='🥼' label='Epis' qt={hospital.epis} />
