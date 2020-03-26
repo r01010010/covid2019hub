@@ -337,7 +337,7 @@ const HEmail = styled.div`
   color: #444;
 `
 const HDescription = styled.div`
-  font-size: 18px;
+  font-size: 16px;
   padding-bottom: 10px;
   color: #999;
 `
