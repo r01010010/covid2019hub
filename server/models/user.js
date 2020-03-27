@@ -11,7 +11,7 @@ var UserSchema = new Schema({
 	signup_date: { type: Date, default: Date.now },
 	description: String,
 	lang: String,
-	category: String,
+	category: { type: String, default: 'other' },
 	placeId: String,
 	type: String,
 	phone: String,

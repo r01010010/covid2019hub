@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+import _ from 'lodash'
 import { useUXStore } from '../../index.js'
 import restClient from '../../network/main_server/rest_api_client'
 import products from '../../db/products'
@@ -12,6 +13,21 @@ import places from '../../db/places'
 // const orderedPlaces = _.chain(places).orderBy(['nm']).value()
 
 export const Product = ({ label, qt, icon }) => <HItem>{icon} <span style={{ fontWeight: 500, width: 200, color: '#444'}}>{label}</span> {qt === 0 ? 'Cubierto' : !qt ? <span style={{ color: '#aaa' }}>N/C</span> : <span style={{ color: '#888'}}> <span style={{ color: 'red', fontWeight: 'bold' }}>{qt}</span></span>}</HItem>
+
+const normalWithChunk = (phone = '', chunk = 0) => {
+
+  const e = _.chain(phone)
+    .replace(' ', '')
+    .replace('+34', '')
+    .replace('034', '')
+    .split('')
+    .chunk(3)
+    .map(chunk => chunk.join(''))
+    .join(' ')
+    .value()
+
+  return e
+}
 
 const placeNameById = (placeId) => {
   console.log(placeId)
@@ -43,7 +59,13 @@ export const App = observer(() => {
   const handleChange = (e, field) => {
     const value = e.target.value
 
-    if (field === 'placeId') setFormHospitalsSelectOptions(hospitals.filter(({ province }) => province === value))
+    if (field === 'placeId') setFormHospitalsSelectOptions(hospitals.filter(({ province }) => { 
+      return province === value
+    }))
+    if (field === 'code' && form.category === 'hospital') form.center = hospitals.find(({ code }) =>  {
+      return code === parseInt(value)
+    }).name
+
     setForm({ ...form, [field]: e.target.value})
   }
 
@@ -153,7 +175,7 @@ export const App = observer(() => {
               </div> 
             }
             { form.category !== 'hospital' &&
-              <Input type='text' placeholder='Centro (Ej. Hospital Santa Cristina)' value={form.center} onChange={(e) => handleChange(e, 'center')} ></Input>
+              <Input type='text' placeholder='Empresa o centro (Ej. Asociación amigos de la sanidad) ' value={form.center} onChange={(e) => handleChange(e, 'center')} ></Input>
             }
             {/* <Input type='text' placeholder='Código' value={form.code} onChange={(e) => handleChange(e, 'code')} ></Input> */}
             <Input type='text' placeholder='Nombre y apellidos de contacto' value={form.name} onChange={(e) => handleChange(e, 'name')} ></Input>
@@ -204,7 +226,7 @@ export const App = observer(() => {
             <Hospital key={item.id}>
               <HName>{normalizeString(item.center) || normalizeString(item.name)} <HLocation>📍{placeNameById(item.placeId).name}</HLocation></HName>
               <HEmail>✉️{normalizeString(item.name)} ({(item.email || '').toLowerCase() || 'Desconocido'}) </HEmail>
-              <HPhone> ☎️ {(item.phone || '').toLowerCase() || 'Desconocido'}</HPhone>
+              <HPhone> ☎️ {normalWithChunk(item.phone, 3) || 'Desconocido'}</HPhone>
               {/* <HDescription>{item.email}</HDescription> */}
               <HDescription>{item.description || 'Sin descripción'}</HDescription>
               {/* <HDescription><a href={`https://www.google.com/maps/place/${(item.center || '').split(' ').join('+')}+${(item.address || '').split(' ').join('+')}`} target='_blank' rel='noopener noreferrer'>{item.address || ''}</a></HDescription> */}
