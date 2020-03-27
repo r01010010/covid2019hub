@@ -203,7 +203,8 @@ export const App = observer(() => {
           { mainList.map(item => (
             <Hospital key={item.id}>
               <HName>{normalizeString(item.center) || normalizeString(item.name)} <HLocation>📍{placeNameById(item.placeId).name}</HLocation></HName>
-              <HEmail>✉️{normalizeString(item.name)} ({(item.email || '').toLowerCase() || 'Desconocido'})</HEmail>
+              <HEmail>✉️{normalizeString(item.name)} ({(item.email || '').toLowerCase() || 'Desconocido'}) </HEmail>
+              <HPhone> ☎️ {(item.phone || '').toLowerCase() || 'Desconocido'}</HPhone>
               {/* <HDescription>{item.email}</HDescription> */}
               <HDescription>{item.description || 'Sin descripción'}</HDescription>
               {/* <HDescription><a href={`https://www.google.com/maps/place/${(item.center || '').split(' ').join('+')}+${(item.address || '').split(' ').join('+')}`} target='_blank' rel='noopener noreferrer'>{item.address || ''}</a></HDescription> */}
@@ -350,7 +351,14 @@ const HLocation = styled.div`
 const HEmail = styled.div`
   font-weight: 400;
   font-size: 18px;
-  margin-bottom: 20px;
+  margin-bottom: 7px;
+  margin-top: 0px;
+  color: #444;
+`
+const HPhone = styled.div`
+  font-weight: 400;
+  font-size: 18px;
+  margin-bottom: 10px;
   margin-top: 0px;
   color: #444;
 `
