@@ -1,6 +1,6 @@
 const config = {
   database: {
-    uri: 'mongodb://tnh03lft:tnh03lfttnh03lft@ds121996.mlab.com:21996/heroku_tnh03lft'
+		uri: 'mongodb://9wjbp6z9:9wjbp6z99wjbp6z9@ds153413.mlab.com:53413/heroku_9wjbp6z9'
   },
 	"server": {
 		"http2": true,

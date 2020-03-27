@@ -66,8 +66,6 @@ export const App = observer(() => {
     })
   }
 
-  // const filteredHospitals = hospitals.filter(h => h.placeId === store.placeId);
-
   return (
     <>
       <Title>
@@ -406,7 +404,7 @@ const Select = styled.select`
 `
 const Footer = styled.div` 
   color: #ff0000;
-  font-size: 12px;
+  font-size: 15px;
   padding: 30px 0;
   display: flex;
   flex-direction: column;
@@ -415,5 +413,6 @@ const Footer = styled.div`
 
   & div {
     color: #999;
+    margin-bottom: 5px;
   }
 `
