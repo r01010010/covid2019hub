@@ -12,7 +12,7 @@ var UserSchema = new Schema({
 	description: String,
 	lang: String,
 	category: String,
-	placeId: Number,
+	placeId: String,
 	type: String,
 	phone: String,
 	code: String,
