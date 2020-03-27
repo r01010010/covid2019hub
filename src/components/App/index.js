@@ -12,7 +12,8 @@ import places from '../../db/places'
 
 // const orderedPlaces = _.chain(places).orderBy(['nm']).value()
 
-export const Product = ({ label, qt, icon }) => <HItem>{icon} <span style={{ fontWeight: 500, width: 200, color: '#444'}}>{label}</span> {qt === 0 ? 'Cubierto' : !qt ? <span style={{ color: '#aaa' }}>N/C</span> : <span style={{ color: '#888'}}> <span style={{ color: 'red', fontWeight: 'bold' }}>{qt}</span></span>}</HItem>
+export const Product = ({ label, qt, icon }) => <HItem>{icon} <span style={{ fontWeight: 500, width: 200, color: '#444'}}>{label}</span> {!qt ? <span style={{ color: '#aaa' }}>N/C</span> : <span style={{ color: '#888'}}> <span style={{ color: 'red', fontWeight: 'bold' }}>{qt}</span></span>}</HItem>
+// {qt === 0 ? <span style={{ color: '#1B880A', fontWeight: 600}}>OK</span> : 
 
 const normalPhone = (phone = '', chunk = 0) => {
 
