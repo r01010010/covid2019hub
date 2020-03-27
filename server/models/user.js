@@ -4,32 +4,43 @@ const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 
 var UserSchema = new Schema({
-	email:  { type: String },
-	uuid: String,
-	name: String,
-	center: String,
+	code: String,
+	type: String,
+	category: { type: String, default: 'other' },
+
+	// general
 	signup_date: { type: Date, default: Date.now },
 	description: String,
 	lang: String,
-	category: { type: String, default: 'other' },
-	placeId: String,
-	type: String,
-	phone: String,
-	code: String,
 	password: { type: String, default: null, required: false },
+
+	// contact
+	name: String,
+	center: String,
+	placeId: String,
+	phone: String,
 	address: String,
+	email:  { type: String },
+	
+	// flags
 	for_listing: { type: Boolean, default: true },
 	known_state: { type: Boolean, default: false },
 
-	masks: Number,
-	visors: Number,
-	respirators: Number,
-	epis: Number,
-	hidrocloroquine: Number,
-	stretchers: Number,
+	// products
+	masks: { type: Number, default: 0 },
+	visors: { type: Number, default: 0 },
+	coats: { type: Number, default: 0 },
+	respirators: { type: Number, default: 0 },
+	epis: { type: Number, default: 0 },
+	stretchers: { type: Number, default: 0 },
+	hidrocloroquine: { type: Number, default: 0 },
+	azithromycin: { type: Number, default: 0 },
+
+	// products donor
 	money: Number,
 	printer: Number,
-	coats: Number,
+
+	// activity
 	history: Array,
 });
 

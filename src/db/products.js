@@ -16,6 +16,11 @@ export default [
     uses: ['tratamiento']
   },
   {
+    id: 'coats',
+    name: 'Batas',
+    uses: ['proteccion']
+  },
+  {
     id: 'epis',
     name: 'Epis',
     uses: ['proteccion']
@@ -26,7 +31,7 @@ export default [
     uses: ['tratamiento']
   },
   {
-    id: 'azitromicina',
+    id: 'azithromycin',
     name: 'Azitromicina',
     uses: ['tratamiento']
   },
@@ -35,6 +40,8 @@ export default [
     name: 'Camillas',
     uses: ['tratamiento']
   },
+
+  // donors
   {
     id: 'money',
     name: 'Dinero',

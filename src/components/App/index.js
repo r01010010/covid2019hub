@@ -14,7 +14,7 @@ import places from '../../db/places'
 
 export const Product = ({ label, qt, icon }) => <HItem>{icon} <span style={{ fontWeight: 500, width: 200, color: '#444'}}>{label}</span> {qt === 0 ? 'Cubierto' : !qt ? <span style={{ color: '#aaa' }}>N/C</span> : <span style={{ color: '#888'}}> <span style={{ color: 'red', fontWeight: 'bold' }}>{qt}</span></span>}</HItem>
 
-const normalWithChunk = (phone = '', chunk = 0) => {
+const normalPhone = (phone = '', chunk = 0) => {
 
   const e = _.chain(phone)
     .replace(' ', '')
@@ -225,16 +225,19 @@ export const App = observer(() => {
           { mainList.map(item => (
             <Hospital key={item.id}>
               <HName>{normalizeString(item.center) || normalizeString(item.name)} <HLocation>📍{placeNameById(item.placeId).name}</HLocation></HName>
-              <HEmail>✉️{normalizeString(item.name)} ({(item.email || '').toLowerCase() || 'Desconocido'}) </HEmail>
-              <HPhone> ☎️ {normalWithChunk(item.phone, 3) || 'Desconocido'}</HPhone>
+              <HEmail>‍️📇 {normalizeString(item.name)} </HEmail>
+              <HEmail>✉️ {(item.email || '').toLowerCase() || 'Desconocido'} </HEmail>
+              <HPhone> ☎️ <a href={`tel:${item.phone}`}>{normalPhone(item.phone, 3) || 'Desconocido'}</a></HPhone>
               {/* <HDescription>{item.email}</HDescription> */}
               <HDescription>{item.description || 'Sin descripción'}</HDescription>
               {/* <HDescription><a href={`https://www.google.com/maps/place/${(item.center || '').split(' ').join('+')}+${(item.address || '').split(' ').join('+')}`} target='_blank' rel='noopener noreferrer'>{item.address || ''}</a></HDescription> */}
               <Product icon='😷' label='Mascarillas' qt={item.masks} />
+              <Product icon='🥽' label='Viseras' qt={item.visors} />
               <Product icon='♻️' label='Respiradores' qt={item.respirators} />
               <Product icon='🥋' label='Epis' qt={item.epis} />
               <Product icon='🥼' label='Batas' qt={item.coats} />
-              <Product icon='🥽' label='Viseras' qt={item.viseras} />
+              <Product icon='🛏' label='Camillas' qt={item.stretchers} />
+              <Product icon='💊' label='Hidrocloroquina' qt={item.hidrocloroquine} />
               {/* <Buttons> 
                 <Button><img src="https://media-edg.barcelona.cat/wp-content/uploads/2014/05/RedCross.png" width="15"></img> AYUDAR</Button>
               </Buttons> */}
