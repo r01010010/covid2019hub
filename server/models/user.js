@@ -18,7 +18,7 @@ var UserSchema = new Schema({
 	code: String,
 	password: { type: String, default: null, required: false },
 	address: String,
-	for_listing: { type: Boolean, default: false },
+	for_listing: { type: Boolean, default: true },
 	known_state: { type: Boolean, default: false },
 
 	masks: Number,
