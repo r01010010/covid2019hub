@@ -137,10 +137,6 @@
       "web.jsx",
       "jsx",
       "node"
-    ],
-    "watchPlugins": [
-      "/Users/r01/Projects/my-app/node_modules/jest-watch-typeahead/filename.js",
-      "/Users/r01/Projects/my-app/node_modules/jest-watch-typeahead/testname.js"
     ]
   }
 }

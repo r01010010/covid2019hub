@@ -90,7 +90,12 @@ export const Product = ({ label, qt, icon }) => {
   
   return <PItem>
     {icon} <PLabel>{label}</PLabel> 
-    <PQt>{qt}</PQt>
+    <PQt>{
+      qt.toLocaleString(
+        undefined, 
+        { minimumFractionDigits: 0 })
+      .replace(',', '.')}
+    </PQt>
   </PItem>
 }
 
