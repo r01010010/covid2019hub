@@ -2,7 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { 
   placeNameById, 
-  normalizeTitle 
+  normalizeTitle,
+  normalizeName 
 } from '../../helpers'
 
 // LIST
@@ -26,7 +27,7 @@ export const Item = ({ item }) => (
       {normalizeTitle(item.center) || normalizeTitle(item.name)} 
       <ILocation>📍{placeNameById(item.placeId).name}</ILocation>
     </ITitle>
-    <IEmail>‍️📇 {normalizeTitle(item.name)} </IEmail>
+    <IEmail>‍️📇 {normalizeName(item.name)} </IEmail>
     <IEmail>✉️ {(item.email || '').toLowerCase() || 'Desconocido'} </IEmail>
     {/* <HPhone>
           ☎️ <a href={`tel:${item.phone}`}>{normalPhone(item.phone, 3) 
