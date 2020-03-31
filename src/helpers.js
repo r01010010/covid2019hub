@@ -20,3 +20,17 @@ export const placeNameById = (placeId) => {
 export const normalizeTitle = (str = '') => {
   return str.toLowerCase().replace(/(^\w|\s\w)/g, m => m.toUpperCase())
 }
+
+const shortName = (str = '') => {
+  const [name,surname] = str.split(' ')  
+  if (typeof surname === 'undefined') {    
+    return name
+  } else {
+    return name + ' ' + surname.toUpperCase().charAt(0) + '.'
+  }
+  
+}
+
+export const normalizeName = (str = '') => {
+  return normalizeTitle(shortName(str))
+}
