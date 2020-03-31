@@ -22,12 +22,9 @@ export const normalizeTitle = (str = '') => {
 }
 
 const shortName = (str = '') => {
-  const [name,surname] = str.split(' ')  
-  if (typeof surname === 'undefined') {    
-    return name
-  } else {
-    return name + ' ' + surname.toUpperCase().charAt(0) + '.'
-  }
+  const [name, surname] = str.split(' ') 
+
+  return !surname ? name : `${name} ${surname.toUpperCase().charAt(0)}.`
   
 }
 
