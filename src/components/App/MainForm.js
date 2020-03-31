@@ -44,6 +44,15 @@ export default ({ section }) => {
     setForm({ ...form, [field]: value })
   }
 
+  if (response) return (
+    <FormResponse>
+      <ResponseTitle>GRACIAS</ResponseTitle>
+      Estamos verificando tu información. 
+      Si todo es correcto aparecerá en la web en unos minutos. 
+      Gracias!
+    </FormResponse> 
+  )
+  
   return (
     <>
       <Title3>
@@ -192,15 +201,7 @@ export default ({ section }) => {
             <ButtonSubmit onClick={createUser}>
               AYUDAR
             </ButtonSubmit> }
-      </HelpForm>
-    
-      { response && 
-        <FormResponse>
-          <ResponseTitle>GRACIAS</ResponseTitle>
-          Estamos verificando tu información. 
-          Si todo es correcto aparecerá en la web en unos minutos. 
-          Gracias!
-        </FormResponse> }
+      </HelpForm>    
     </>
   )
 }
