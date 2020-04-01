@@ -25,7 +25,6 @@ export const Select = styled.select`
   background-position: right .7em top 50%, 0 0;
   background-size: .65em auto, 100%;
 `
-
 export const Title2 = styled.div`
   font-size: 30px;
   padding: 30px 0 10px 0;

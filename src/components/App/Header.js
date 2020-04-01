@@ -37,7 +37,6 @@ const Contact = styled.div`
   color: #999;
   font-weight: 400;
   margin-top: 3px;
-  font-family: Helvetica;
   width: 100%;
   text-align: left;
 `
