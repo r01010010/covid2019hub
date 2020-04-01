@@ -12,11 +12,11 @@ export default () => {
 
   return (
     <MenuButtons>
-      <Button onClick={() => activate('we_need_help')} bg='red' color='white'>🆘 S O S !</Button>
-      <Button onClick={() => activate('i_want_to_help')} bg='white'><img src="https://media-edg.barcelona.cat/wp-content/uploads/2014/05/RedCross.png" width="15"/>&nbsp;AYUDAR</Button>
-      <Button onClick={() => activate('hospitals')}>🏥 HOSPITALES</Button>
-      <Button onClick={() => activate('residencies')}>🏠 RESIDENCIAS</Button>
-      <Button onClick={() => activate('donors')}>👋🏻 DONANTES</Button>
+      <Button onClick={() => activate('we_need_help')} bg='red' color='white'>🆘 S O S !<Brief color='#FFC6C6'>Click aquí si necesitas ayuda</Brief></Button>
+      <Button onClick={() => activate('i_want_to_help')} bg='white'><img src="https://media-edg.barcelona.cat/wp-content/uploads/2014/05/RedCross.png" width="15"/>&nbsp;AYUDAR<Brief>Click aquí si quieres ayudar</Brief></Button>
+      <Button onClick={() => activate('hospitals')}>🏥 HOSPITALES<Brief>Ver listado de hospitales</Brief></Button>
+      <Button onClick={() => activate('residencies')}>🏠 RESIDENCIAS<Brief>Ver listado de residencias</Brief></Button>
+      <Button onClick={() => activate('donors')}><div>👋🏻 DONANTES</div><Brief>Ver listado de donantes</Brief></Button>
       {/* <Button selected={section === 'manuals'} onClick={() => activate('manuals')} style={{ background: '#ddd', color: '#444', height: 80}}>🖍 MANUALES <div style={{ color: '#aaa', fontWeight: 400, fontSize: 15, marginTop: 3}}>Házlo to mismo/a en casa!</div></Button> */}
       {/* <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')} color='white' style={{ background: '#ddd', color: '#444'}}><img src="https://cdn.onlinewebfonts.com/svg/img_564932.png" width="20"/> &nbsp;FARMACIAS</Button>
       <Button selected={section === 'i_want_to_help'} onClick={() => activate('i_want_to_help')} color='white' style={{ background: '#ddd', color: '#444'}}><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/237/shopping-trolley_1f6d2.png" width="20"/> &nbsp;SUPERMERCADOS</Button> */}
@@ -31,7 +31,7 @@ const MenuButtons = styled.div`
 `
 export const Button = styled.button`
   border-radius: 5px;
-  height: 50px;
+  height: 80px;
   cursor: pointer;
   background-color: #fff;
   width: 100%;
@@ -43,4 +43,11 @@ export const Button = styled.button`
   padding: 10px;
   margin-bottom: 10px;
   background: ${({ bg }) => bg || '#ddd'};
+`
+export const Brief = styled.div`
+  font-weight: 400;
+  margin-top: 5px;
+  font-size: 14px;
+  color: ${({ color }) => color || '#888'};
+  text-transform: uppercase;
 `
