@@ -14,20 +14,21 @@ export default class UXStore {
     0,
     async () => {
       const { section, placeId } = this
-      let filter = {}
 
       if (!section) return
 
-      if (section === 'hospitals') 
-        filter = { category: 'hospital',  type: 'all' }
-      if (section === 'residencies') 
-        filter = { category: 'residency', type: 'all' }
-      if (section === 'donors') 
-        filter = { category: 'all', type: 'donor' }
+      const filter = 
+          section === 'hospitals' ? 
+          { category: 'hospital' }
+        : section === 'residencies' ?
+          { category: 'residency'}
+        : section === 'donors' ?
+          { type: 'donor' }
+        : {}
 
       const response = await restClient.users.getPromise({ 
           ...filter, 
-          placeId: placeId || 'all' 
+          placeId: placeId || undefined
         })
       const data = await response.json()
 

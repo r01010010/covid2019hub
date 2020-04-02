@@ -10,13 +10,13 @@ const routes = {
   basepath: `${protocol}://${hostname}:${port}/api/`,
   users: {
     create: 'users',
-    get: 'users'
+    get: 'users-get'
   }
 };
 
 const isSuccessful = (status) => !!(status >= 200 && status < 300)
 
-const createRequest = (method, data, contentType) => ({
+const createRequest = (method, data = {}, contentType) => ({
   method,
   headers: {
     Accept: 'application/json',
@@ -25,11 +25,7 @@ const createRequest = (method, data, contentType) => ({
       : 'application/json',
   },
   redirect: 'follow',
-  body: contentType === 'multipart' 
-    ? data 
-    : method !== GET 
-    ? JSON.stringify(data) 
-    : null
+  body: contentType === 'multipart' ? data : JSON.stringify(data)
   // credentials: 'include'
   // mode: 'no-cors',
 })
@@ -65,19 +61,19 @@ export default {
         })
     },
     get: (filter = {}, cb = () => {}) => {
-      const uri = `${routes.basepath}${routes.users.get}/${filter.category}/${filter.placeId}/${filter.type}`
+      const uri = `${routes.basepath}${routes.users.get}`
 
       return execFetch(
         uri, 
-        createRequest(GET, filter, null), 
+        createRequest(POST, filter, null), 
         (err, data, status) => {
           cb(err, !isSuccessful(status) ? null : data)
         })
     },
     getPromise: (filter = {}, cb = () => {}) => {
-      const uri = `${routes.basepath}${routes.users.get}/${filter.category}/${filter.placeId}/${filter.type}`
+      const uri = `${routes.basepath}${routes.users.get}`
 
-      return execFetchPromise(uri, createRequest(GET, filter, null))
+      return execFetchPromise(uri, createRequest(POST, filter, null))
     }, 
   }
 }

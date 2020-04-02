@@ -21,8 +21,9 @@ const createUser = function(req, res, next) {
 }
 
 const getUsers = function(req, res, next){
+	console.log('req.body', req.body)
   console.log('Request received for getUser');
-	users.get(req.params, function(err, users){
+	users.get(req.body, function(err, users){
 		console.log(users)
 		if (err) {
 			res.status(500);
@@ -36,6 +37,22 @@ const getUsers = function(req, res, next){
 		}
 	});
 };
+
+// const getUsersPost = function(req, res, next){
+// 	users.get(req.body, function(err, user){
+// 		console.log(users)
+// 		if (err) {
+// 			res.status(500);
+// 			res.json({err: err});
+// 		} else if (!users){
+// 			console.log('no users found...');
+// 			res.status(204);
+// 			res.json({err: new Error('Users not found')});
+// 		} else {
+// 			res.json(users);
+// 		}
+// 	});	
+// }
 
 module.exports = {
 	createUser: createUser,
