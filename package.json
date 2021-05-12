@@ -42,7 +42,7 @@
     "mobx-react-lite": "^1.5.2",
     "mobx-utils": "^5.5.5",
     "mongoose": "^5.9.6",
-    "nodemailer": "^6.4.6",
+    "nodemailer": "^6.4.16",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "pnp-webpack-plugin": "1.2.1",
     "postcss-flexbugs-fixes": "4.1.0",
